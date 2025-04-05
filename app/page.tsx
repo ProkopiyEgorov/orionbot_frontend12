@@ -1,7 +1,7 @@
 // app/page.tsx
 'use client';
 
-import ChatBox from 'app/components/ChatBox';
+import ChatBox from './components/ChatBox';
 import Image from 'next/image';
 
 export default function Home() {
