@@ -1,3 +1,4 @@
+// app/layout.tsx
 export default function RootLayout({
   children,
 }: {
@@ -6,7 +7,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head />
-      <body style={{ fontFamily: 'sans-serif', margin: 0, padding: 0 }}>
+      <body>
         {children}
       </body>
     </html>
