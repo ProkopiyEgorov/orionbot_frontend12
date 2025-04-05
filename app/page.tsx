@@ -1,30 +1,37 @@
+// app/page.tsx
 'use client';
 
+import ChatBox from './components/ChatBox';
 import Image from 'next/image';
-import ChatBox from 'app/components/ChatBox';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#111] text-white px-6 py-12 text-center">
-      <div className="flex flex-col items-center space-y-6 animate-fade-in">
+    <main
+      style={{
+        minHeight: '100vh',
+        backgroundColor: '#111',
+        padding: '60px 20px',
+        color: '#fff',
+        fontFamily: 'Segoe UI, sans-serif',
+        textAlign: 'center',
+      }}
+    >
+      <div style={{ maxWidth: 720, margin: '0 auto' }}>
         <Image
-          src="/orion-logo.png"
+          src="/orion-logo.png.png"
           alt="OrionBot Logo"
           width={120}
           height={120}
-          className="rounded-full shadow-lg"
+          style={{ margin: '0 auto', borderRadius: '16px' }}
         />
-        <h1 className="text-4xl md:text-5xl font-bold tracking-wide drop-shadow-xl">
+        <h1 style={{ fontSize: '2.5rem', margin: '20px 0 10px', fontWeight: 'bold' }}>
           Добро пожаловать в OrionBot!
         </h1>
-        <p className="text-lg md:text-xl text-gray-300">
+        <p style={{ fontSize: '1.1rem', color: '#aaa', marginBottom: '30px' }}>
           Юридический AI-бот 24/7
         </p>
-      </div>
-      <div className="mt-12 animate-fade-in-slow">
         <ChatBox />
       </div>
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#2d2d2d_1px,transparent_1px)] [background-size:20px_20px] opacity-20" />
     </main>
   );
 }
