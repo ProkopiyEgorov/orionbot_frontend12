@@ -1,16 +1,62 @@
 'use client';
 
-import dynamic from 'next/dynamic';
+import { useState } from 'react';
 
-const ChatBox = dynamic(() => import('./components/ChatBox'), { ssr: false });
+export default function ChatBox() {
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [loading, setLoading] = useState(false);
 
-export default function HomePage() {
+  const ask = async () => {
+    if (!question.trim()) return;
+
+    setLoading(true);
+    setAnswer(''); // очистка
+
+    const url = process.env.NEXT_PUBLIC_API_URL + '/ask';
+    console.log('📤 Отправка запроса:', url, 'с вопросом:', question);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      });
+
+      if (!res.ok) {
+        console.error('❌ Ошибка ответа:', res.status, await res.text());
+        setAnswer('Ошибка сервера. Попробуйте позже.');
+      } else {
+        const data = await res.json();
+        console.log('📥 Ответ:', data);
+        setAnswer(data.answer || 'Нет ответа');
+      }
+    } catch (err) {
+      console.error('❗ Ошибка fetch:', err);
+      setAnswer('Ошибка запроса. Проверьте соединение.');
+    }
+
+    setLoading(false);
+  };
+
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: '#111', padding: '60px 20px', color: 'white', textAlign: 'center' }}>
-      <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>Добро пожаловать в OrionBot!</h1>
-      <p style={{ fontSize: '1.2rem', marginBottom: '40px', color: '#ccc' }}>Юридический AI-бот 24/7</p>
-      <ChatBox />
-    </main>
+    <div style={{ maxWidth: 600, margin: '0 auto', padding: 20 }}>
+      <textarea
+        placeholder="Введите юридический вопрос..."
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+        rows={4}
+        style={{ width: '100%', padding: 10 }}
+      />
+      <button onClick={ask} disabled={loading} style={{ marginTop: 10 }}>
+        {loading ? 'Обработка...' : 'Спросить OrionBot'}
+      </button>
+      {answer && (
+        <div style={{ marginTop: 20, whiteSpace: 'pre-wrap', color: '#fff' }}>
+          <strong>Ответ:</strong>
+          <p>{answer}</p>
+        </div>
+      )}
+    </div>
   );
 }
-
