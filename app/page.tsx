@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import ChatBox from '@/components/ChatBox';
+import ChatBox from 'app/components/ChatBox';
 
 export default function Home() {
   return (
