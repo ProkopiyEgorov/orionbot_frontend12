@@ -1,108 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import Image from 'next/image';
+import ChatBox from '@/components/ChatBox';
 
-export default function HomePage() {
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const ask = async () => {
-    setLoading(true);
-    setAnswer('');
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ask`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question }),
-      });
-
-      const data = await res.json();
-      setAnswer(data.answer || 'Ошибка при получении ответа.');
-    } catch (err) {
-      setAnswer('Произошла ошибка. Попробуйте позже.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function Home() {
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        backgroundColor: '#111',
-        padding: '60px 20px',
-        color: '#fff',
-        textAlign: 'center',
-        fontFamily: 'sans-serif',
-      }}
-    >
-      {/* ЛОГОТИП */}
-      <img
-        src="/orion-logo.png"
-        alt="Логотип OrionBot"
-        style={{
-          width: '100px',
-          margin: '0 auto 20px',
-        }}
-      />
-
-      <h1 style={{ fontSize: '2.5rem', marginBottom: 10 }}>
-        Добро пожаловать в OrionBot!
-      </h1>
-      <p style={{ color: '#ccc', fontSize: '1.1rem', marginBottom: 40 }}>
-        Юридический AI-бот 24/7
-      </p>
-
-      <div style={{ maxWidth: 600, margin: '0 auto' }}>
-        <textarea
-          placeholder="Введите юридический вопрос..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          rows={4}
-          style={{
-            width: '100%',
-            padding: '15px',
-            fontSize: '1rem',
-            borderRadius: '8px',
-            border: 'none',
-            resize: 'vertical',
-          }}
+    <main className="min-h-screen bg-[#111] text-white px-6 py-12 text-center">
+      <div className="flex flex-col items-center space-y-6 animate-fade-in">
+        <Image
+          src="/orion-logo.png"
+          alt="OrionBot Logo"
+          width={120}
+          height={120}
+          className="rounded-full shadow-lg"
         />
-        <button
-          onClick={ask}
-          disabled={loading}
-          style={{
-            marginTop: '16px',
-            backgroundColor: '#4F46E5',
-            color: '#fff',
-            padding: '12px 24px',
-            borderRadius: '8px',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '1rem',
-          }}
-        >
-          {loading ? 'Обработка...' : 'Спросить OrionBot'}
-        </button>
-
-        {answer && (
-          <div
-            style={{
-              backgroundColor: '#1e1e1e',
-              marginTop: '32px',
-              padding: '20px',
-              borderRadius: '10px',
-              border: '1px solid #333',
-              textAlign: 'left',
-              whiteSpace: 'pre-wrap',
-            }}
-          >
-            <strong style={{ display: 'block', marginBottom: 10 }}>Ответ:</strong>
-            {answer}
-          </div>
-        )}
+        <h1 className="text-4xl md:text-5xl font-bold tracking-wide drop-shadow-xl">
+          Добро пожаловать в OrionBot!
+        </h1>
+        <p className="text-lg md:text-xl text-gray-300">
+          Юридический AI-бот 24/7
+        </p>
       </div>
+      <div className="mt-12 animate-fade-in-slow">
+        <ChatBox />
+      </div>
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#2d2d2d_1px,transparent_1px)] [background-size:20px_20px] opacity-20" />
     </main>
   );
 }
